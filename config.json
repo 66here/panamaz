@@ -1,0 +1,97 @@
+{
+  "DATA_PATH": "/kaggle/input/datasets/lailadyah/adl-w12/Panama_beban_listrik_per_jam_2015-2020_.xlsx",
+  "HORIZONS": [
+    1,
+    6,
+    24,
+    72
+  ],
+  "EVAL_STRIDE": 3,
+  "WEATHER_AT": "target",
+  "SPLIT_FRAC": [
+    0.7,
+    0.1,
+    0.2
+  ],
+  "ANOM_DATES": [
+    "2017-06-27",
+    "2019-01-20"
+  ],
+  "ANOM_TREATMENT": "flag",
+  "LOAD_LAGS": [
+    0,
+    1,
+    24,
+    168
+  ],
+  "FSET_DESC": {
+    "F0": "riwayat beban (lag, rolling mean/std)",
+    "F1": "F0 + kalender (jam, hari, bulan, holiday, Holiday_ID, school, flag anomali)",
+    "F2": "F1 + cuaca Tocumen (4 variabel)",
+    "F3": "F1 + cuaca 3 kota (12 variabel)",
+    "F4": "F1 + komponen PCA cuaca (95% varians)"
+  },
+  "ML_FSETS": [
+    "F0",
+    "F1",
+    "F2",
+    "F3",
+    "F4"
+  ],
+  "ML_MODELS": [
+    "RandomForest",
+    "XGBoost",
+    "LightGBM"
+  ],
+  "ARIMAX_FSETS": [
+    "F1",
+    "F3"
+  ],
+  "STAT_MODELS": [
+    "SARIMA",
+    "ETS",
+    "ARIMAX"
+  ],
+  "DL_ARCHS": [
+    "lstm",
+    "gru",
+    "cnn"
+  ],
+  "DL_FSETS": [
+    "F1",
+    "F3"
+  ],
+  "SEQ_LEN": 96,
+  "CHRONOS_SIZES": {
+    "small": "autogluon/chronos-2-small",
+    "base": "amazon/chronos-2"
+  },
+  "CHRONOS_CTX": 512,
+  "CHRONOS_CTX_LIST": [
+    168,
+    720,
+    4320
+  ],
+  "CHRONOS_FT_MODE": "lora",
+  "CHRONOS_FT_GRID": [
+    [
+      250,
+      1e-05
+    ],
+    [
+      1000,
+      1e-05
+    ]
+  ],
+  "COLD_DAYS": {
+    "1 bulan": 30,
+    "3 bulan": 90,
+    "1 tahun": 365,
+    "3 tahun": 1095
+  },
+  "FAST_DEBUG": false,
+  "SEED": 42,
+  "TRAIN_END": "2018-11-03 23:00:00",
+  "VAL_END": "2019-05-22 23:00:00",
+  "COLD_INFO": "{'ML_terbaik_val': ('XGBoost', 'F2'), 'DL_terbaik_val': ('gru', 'F1')}"
+}
