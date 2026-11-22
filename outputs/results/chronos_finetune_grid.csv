@@ -1,0 +1,5 @@
+ukuran,num_steps,lr,RMSE_val_rata2,catatan
+small,250,1e-05,,"ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')"
+small,1000,1e-05,,"ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')"
+base,250,1e-05,,"ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')"
+base,1000,1e-05,,"ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')"

@@ -1,0 +1,191 @@
+RINGKASAN HASIL (kirim isi file ini + gambar penting)
+============================================================
+FAST_DEBUG = False | WEATHER_AT = target | EVAL_STRIDE = 3 | ANOM_TREATMENT = flag
+
+Split:
+       jumlah_jam  porsi_%               mulai               akhir
+train       33623     70.0 2015-01-03 01:00:00 2018-11-03 23:00:00
+val          4800     10.0 2018-11-04 00:00:00 2019-05-22 23:00:00
+test         9625     20.0 2019-05-23 00:00:00 2020-06-27 00:00:00
+
+Jam anomali berflag: 8
+
+Leaderboard RMSE test (baris = model, kolom = horizon):
+horizon                            1      6      24     72
+family       model        fset                            
+ML           RandomForest F4     30.0   68.2   72.2   85.2
+             XGBoost      F3     28.8   71.9   72.2   86.6
+             LightGBM     F2     29.3   72.2   72.4   85.8
+             XGBoost      F2     29.2   68.3   72.5   85.6
+             RandomForest F2     30.0   68.8   72.5   85.9
+                          F1     29.9   68.9   72.6   88.4
+                          F3     30.0   70.2   72.9   86.9
+             XGBoost      F4     29.3   69.2   73.9   84.2
+             LightGBM     F4     29.0   71.5   74.2   83.6
+                          F1     28.9   70.7   74.4   86.7
+                          F3     29.5   69.5   74.5   86.5
+             XGBoost      F1     29.0   72.2   75.3   87.8
+DL           DL-LSTM      F1     31.9   80.3   77.6   97.4
+ML           RandomForest F0     31.9   68.4   78.3   90.9
+             LightGBM     F0     27.3   67.6   78.9   91.1
+             XGBoost      F0     27.8   68.8   79.5   93.5
+DL           DL-LSTM      F3     42.3   82.9   80.0   92.4
+             DL-GRU       F1     29.6   78.9   84.3  100.7
+Konvensional ETS          F0     24.0   67.8   84.6  104.6
+DL           DL-GRU       F3     35.4   82.8   91.3  100.5
+             DL-CNN       F1     85.0   86.8   93.9  104.8
+Konvensional SARIMA       F0     24.7   77.1   94.3  104.6
+             SNaive-168   F0     97.8   96.5   96.4   96.3
+DL           DL-CNN       F3     98.0   98.1   97.9   96.6
+Konvensional SNaive-24    F0    112.4  111.8  111.7  139.3
+             Naive        F0     57.1  229.2  111.7  139.3
+             ARIMAX       F1     26.4   92.2  123.7  130.3
+                          F3     28.3  102.4  134.7  135.2
+
+Model terbaik per horizon (test):
+ horizon        model_id       family   MAE  RMSE  MAPE  sMAPE
+       1          ETS|F0 Konvensional 17.25 24.01  1.43   1.43
+       6     LightGBM|F0           ML 46.73 67.58  3.81   3.80
+      24 RandomForest|F4           ML 52.38 72.18  4.36   4.31
+      72     LightGBM|F4           ML 62.28 83.57  5.17   5.12
+
+Penurunan RMSE (%) vs F0 (model ML):
+horizon             1    6    24   72
+model        fset                    
+LightGBM     F0    0.0  0.0  0.0  0.0
+             F1   -5.7 -4.6  5.7  4.8
+             F2   -7.2 -6.8  8.2  5.7
+             F3   -8.0 -2.8  5.6  5.0
+             F4   -6.2 -5.8  5.9  8.2
+RandomForest F0    0.0  0.0  0.0  0.0
+             F1    6.3 -0.8  7.3  2.8
+             F2    5.8 -0.6  7.4  5.5
+             F3    5.8 -2.7  6.9  4.4
+             F4    5.9  0.3  7.8  6.3
+XGBoost      F0    0.0  0.0  0.0  0.0
+             F1   -4.3 -4.9  5.3  6.1
+             F2   -5.0  0.8  8.9  8.5
+             F3   -3.6 -4.4  9.2  7.4
+             F4   -5.4 -0.5  7.1  9.9
+
+Chronos vs model dilatih sendiri (RMSE test):
+horizon                 1     6     24    72
+kelompok                                    
+DL terbaik            29.6  78.9  77.6  92.4
+Konvensional terbaik  24.0  67.8  84.6  96.3
+ML terbaik            27.3  67.6  72.2  83.6
+
+Cold start (RMSE test, horizon acuan):
+hari     30.0    90.0    365.0   1095.0  1401.0
+family                                         
+Cold-DL   103.4   123.0    87.8    85.6    84.3
+Cold-ML    95.5    89.4    75.4    79.1    72.5
+
+Grid fine-tuning Chronos:
+ukuran  num_steps    lr  RMSE_val_rata2                                                                                                                     catatan
+ small        250 1e-05             NaN ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')
+ small       1000 1e-05             NaN ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')
+  base        250 1e-05             NaN ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')
+  base       1000 1e-05             NaN ImportError('Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported')
+
+Log langkah Chronos:
+                    langkah status                                                                                                                                                                                                                                                                                  keterangan
+       Chronos2-small-zs|F0  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+        Chronos2-base-zs|F0  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+        Chronos2-base-zs|F1  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+        Chronos2-base-zs|F3  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+ Chronos2-base-zs-ctx168|F0  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+ Chronos2-base-zs-ctx720|F0  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+Chronos2-base-zs-ctx4320|F0  GAGAL RuntimeError('CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasLtMatmulAlgoGetHeuristic( ltHandle, computeDesc.descriptor(), Adesc.descriptor(), Bdesc.descriptor(), Cdesc.descriptor(), Cdesc.descriptor(), preference.descriptor(), 1, &heuristicResult, &returnedResult)`')
+
+Uji Diebold-Mariano (10 pembanding teratas per horizon):
+ horizon         terbaik      pembanding  RMSE_terbaik  RMSE_pembanding  DM_stat  p_value
+       1          ETS|F0       SARIMA|F0       24.0130          24.7096   1.2139   0.2249
+       1          ETS|F0       ARIMAX|F1       24.0130          26.4165   3.7017   0.0002
+       1          ETS|F0     LightGBM|F0       24.0130          27.3244   4.3350   0.0000
+       1          ETS|F0      XGBoost|F0       24.0130          27.7918   4.3734   0.0000
+       1          ETS|F0       ARIMAX|F3       24.0130          28.2754   5.4412   0.0000
+       1          ETS|F0      XGBoost|F3       24.0130          28.7844   4.9126   0.0000
+       1          ETS|F0     LightGBM|F1       24.0130          28.8685   5.3336   0.0000
+       1          ETS|F0      XGBoost|F1       24.0130          28.9996   4.7656   0.0000
+       1          ETS|F0     LightGBM|F4       24.0130          29.0059   5.1369   0.0000
+       1          ETS|F0      XGBoost|F2       24.0130          29.1943   5.0491   0.0000
+       6     LightGBM|F0          ETS|F0       67.5754          67.7648   0.0776   0.9381
+       6     LightGBM|F0 RandomForest|F4       67.5754          68.1564   0.2558   0.7981
+       6     LightGBM|F0      XGBoost|F2       67.5754          68.2756   0.3040   0.7612
+       6     LightGBM|F0 RandomForest|F0       67.5754          68.3833   0.8430   0.3993
+       6     LightGBM|F0 RandomForest|F2       67.5754          68.7681   0.5013   0.6162
+       6     LightGBM|F0      XGBoost|F0       67.5754          68.8355   2.4769   0.0133
+       6     LightGBM|F0 RandomForest|F1       67.5754          68.9156   0.5899   0.5553
+       6     LightGBM|F0      XGBoost|F4       67.5754          69.1758   0.6775   0.4981
+       6     LightGBM|F0     LightGBM|F3       67.5754          69.4988   0.7346   0.4627
+       6     LightGBM|F0 RandomForest|F3       67.5754          70.1981   1.0583   0.2900
+      24 RandomForest|F4      XGBoost|F3       72.1836          72.2197   0.0571   0.9544
+      24 RandomForest|F4     LightGBM|F2       72.1836          72.4485   0.4362   0.6627
+      24 RandomForest|F4      XGBoost|F2       72.1836          72.4701   0.3621   0.7173
+      24 RandomForest|F4 RandomForest|F2       72.1836          72.4810   0.8799   0.3790
+      24 RandomForest|F4 RandomForest|F1       72.1836          72.5671   0.8430   0.3993
+      24 RandomForest|F4 RandomForest|F3       72.1836          72.9194   2.4116   0.0159
+      24 RandomForest|F4      XGBoost|F4       72.1836          73.8678   3.0076   0.0027
+      24 RandomForest|F4     LightGBM|F4       72.1836          74.2349   4.0581   0.0001
+      24 RandomForest|F4     LightGBM|F1       72.1836          74.4148   3.0244   0.0025
+      24 RandomForest|F4     LightGBM|F3       72.1836          74.5005   4.4272   0.0000
+      72     LightGBM|F4      XGBoost|F4       83.5658          84.2362   1.2768   0.2018
+      72     LightGBM|F4 RandomForest|F4       83.5658          85.1837   2.1908   0.0285
+      72     LightGBM|F4      XGBoost|F2       83.5658          85.5850   3.0978   0.0020
+      72     LightGBM|F4     LightGBM|F2       83.5658          85.8423   3.0737   0.0021
+      72     LightGBM|F4 RandomForest|F2       83.5658          85.9198   2.7973   0.0052
+      72     LightGBM|F4     LightGBM|F3       83.5658          86.5346   3.3326   0.0009
+      72     LightGBM|F4      XGBoost|F3       83.5658          86.6022   3.5166   0.0004
+      72     LightGBM|F4     LightGBM|F1       83.5658          86.7348   2.5231   0.0117
+      72     LightGBM|F4 RandomForest|F3       83.5658          86.9223   3.7294   0.0002
+      72     LightGBM|F4      XGBoost|F1       83.5658          87.8059   3.4787   0.0005
+
+Kontribusi kelompok fitur ML (%):
+                      h=1       h=24
+cuaca David      0.700000   2.000000
+cuaca Santiago   1.000000   2.000000
+cuaca Tocumen    1.800000  10.200000
+kalender        20.200001  38.099998
+riwayat beban   76.300003  47.700001
+
+Importance permutasi DL:
+               kenaikan_RMSE_MWh      model
+kalender                  131.65  DL-GRU|F1
+riwayat beban              93.21  DL-GRU|F1
+
+Biaya komputasi:
+             model_id       family  train_sec  infer_sec  n_fc  ms_per_prakiraan              model
+ Cold-DL-GRU-1095d|F1      Cold-DL      26.30       0.36 19236              0.02  Cold-DL-GRU-1095d
+   Cold-DL-GRU-30d|F1      Cold-DL      28.89       0.38 19236              0.02    Cold-DL-GRU-30d
+  Cold-DL-GRU-365d|F1      Cold-DL      20.27       0.35 19236              0.02   Cold-DL-GRU-365d
+   Cold-DL-GRU-90d|F1      Cold-DL      17.92       0.37 19236              0.02    Cold-DL-GRU-90d
+Cold-XGBoost-1095d|F2      Cold-ML      12.29       0.14 19174              0.01 Cold-XGBoost-1095d
+  Cold-XGBoost-30d|F2      Cold-ML       2.93       0.06 19174              0.00   Cold-XGBoost-30d
+ Cold-XGBoost-365d|F2      Cold-ML       5.38       0.08 19174              0.00  Cold-XGBoost-365d
+  Cold-XGBoost-90d|F2      Cold-ML       3.50       0.06 19174              0.00   Cold-XGBoost-90d
+            DL-CNN|F1           DL      42.49       4.89 19236              0.25             DL-CNN
+            DL-CNN|F3           DL      39.65       2.80 19236              0.15             DL-CNN
+            DL-GRU|F1           DL      41.09       0.37 19236              0.02             DL-GRU
+            DL-GRU|F3           DL      34.95       0.45 19236              0.02             DL-GRU
+           DL-LSTM|F1           DL      36.75       0.41 19236              0.02            DL-LSTM
+           DL-LSTM|F3           DL      32.42       0.48 19236              0.03            DL-LSTM
+            ARIMAX|F1 Konvensional       4.02      19.63 12836              1.53             ARIMAX
+            ARIMAX|F3 Konvensional       2.48      19.96 12836              1.55             ARIMAX
+               ETS|F0 Konvensional       0.06      17.04 12836              1.33                ETS
+            SARIMA|F0 Konvensional      13.33     247.22 12836             19.26             SARIMA
+          LightGBM|F0           ML       4.30       0.15 19174              0.01           LightGBM
+          LightGBM|F1           ML       5.24       0.11 19174              0.01           LightGBM
+          LightGBM|F2           ML      10.04       0.29 19174              0.02           LightGBM
+          LightGBM|F3           ML      11.96       0.35 19174              0.02           LightGBM
+          LightGBM|F4           ML      10.16       0.27 19174              0.01           LightGBM
+      RandomForest|F0           ML      40.06       0.31 19174              0.02       RandomForest
+      RandomForest|F1           ML      52.90       0.33 19174              0.02       RandomForest
+      RandomForest|F2           ML      70.85       0.32 19174              0.02       RandomForest
+      RandomForest|F3           ML     106.76       0.34 19174              0.02       RandomForest
+      RandomForest|F4           ML      88.71       0.34 19174              0.02       RandomForest
+           XGBoost|F0           ML       6.89       0.10 19174              0.01            XGBoost
+           XGBoost|F1           ML       6.72       0.08 19174              0.00            XGBoost
+           XGBoost|F2           ML      14.14       0.15 19174              0.01            XGBoost
+           XGBoost|F3           ML      19.47       0.15 19174              0.01            XGBoost
+           XGBoost|F4           ML      14.30       0.13 19174              0.01            XGBoost
