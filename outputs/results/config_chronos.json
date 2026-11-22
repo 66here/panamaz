@@ -1,0 +1,53 @@
+{
+  "HORIZONS": [
+    1,
+    6,
+    24,
+    72
+  ],
+  "EVAL_STRIDE": 3,
+  "WEATHER_AT": "target",
+  "SPLIT_FRAC": [
+    0.7,
+    0.1,
+    0.2
+  ],
+  "ANOM_DATES": [
+    "2017-06-27",
+    "2019-01-20"
+  ],
+  "ANOM_TREATMENT": "flag",
+  "CHRONOS_SIZES": {
+    "small": "autogluon/chronos-2-small",
+    "base": "amazon/chronos-2"
+  },
+  "CHRONOS_CTX": 512,
+  "CHRONOS_CTX_LIST": [
+    168,
+    720,
+    4320
+  ],
+  "CHRONOS_COV_FSETS": [
+    "F1",
+    "F3"
+  ],
+  "CHRONOS_FT_SIZES": [
+    "small",
+    "base"
+  ],
+  "CHRONOS_FT_MODE": "lora",
+  "CHRONOS_FT_GRID": [
+    [
+      250,
+      1e-05
+    ],
+    [
+      1000,
+      1e-05
+    ]
+  ],
+  "CHRONOS_FT_BATCH": 32,
+  "CHRONOS_BATCH": 64,
+  "FAST_DEBUG": false,
+  "SEED": 42
+}
